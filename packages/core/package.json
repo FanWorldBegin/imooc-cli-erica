@@ -1,6 +1,6 @@
 {
   "name": "@imooc-cli-dev-erica/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "imooc-cli-dev-erica core",
   "author": "FanWorldBegin <ericaFront1995@gmail.com>",
   "homepage": "",
@@ -20,6 +20,6 @@
     "test": "echo \"Run testing from core\""
   },
   "dependencies": {
-    "@imooc-cli-dev-erica/utils": "^1.0.0"
+    "@imooc-cli-dev-erica/utils": "^1.0.1"
   }
 }
