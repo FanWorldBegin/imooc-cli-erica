@@ -13,6 +13,9 @@
   "files": [
     "lib"
   ],
+  "bin": {
+    "imooc-clic-dev": "bin/index.js"
+  },
   "publishConfig": {
     "registry": "http://registry.npmjs.org/"
   },
@@ -21,5 +24,6 @@
   },
   "dependencies": {
     "@imooc-cli-dev-erica/utils": "^1.0.1"
-  }
+  },
+  "gitHead": "bd132da299f82357960babcde600ed4251cd7560"
 }
