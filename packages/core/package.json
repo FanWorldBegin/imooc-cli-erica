@@ -20,7 +20,7 @@
     "test": "echo \"Run testing from core\""
   },
   "dependencies": {
-    "@imooc-cli-dev-erica/utils": "^1.0.3"
+    "@imooc-cli-dev-erica/utils": "^1.0.4"
   },
   "gitHead": "906dfaff5ae034a057b0278ec169a9aed68ce990",
   "publishConfig": {
