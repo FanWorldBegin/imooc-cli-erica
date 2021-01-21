@@ -1,6 +1,10 @@
-42 error Error: Command failed: git tag v1.0.3 -m v1.0.3
-42 error fatal: tag 'v1.0.3' already exists
-42 error
-42 error     at makeError (/work/架构师/2.lerna/imooc-cli-dev/node_modules/execa/index.js:174:9)
-42 error     at /work/架构师/2.lerna/imooc-cli-dev/node_modules/execa/index.js:278:16
-42 error     at processTicksAndRejections (internal/process/task_queues.js:97:5)
+0 silly argv {
+0 silly argv   _: [ 'create' ],
+0 silly argv   lernaVersion: '3.22.1',
+0 silly argv   '$0': 'lerna',
+0 silly argv   name: 'get-npm-info',
+0 silly argv   loc: 'utils/get-npm-info'
+0 silly argv }
+1 notice cli v3.22.1
+2 verbose rootPath /work/架构师/2.lerna/imooc-cli-dev
+3 error
