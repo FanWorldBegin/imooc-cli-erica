@@ -22,6 +22,7 @@
   "dependencies": {
     "@imooc-cli-dev-erica/get-npm-info": "file:../../utils/get-npm-info",
     "@imooc-cli-dev-erica/log": "file:../../utils/log",
+    "@imooc-cli-dev-erica/init": "file:../../commands/init",
     "colors": "^1.4.0",
     "commander": "^7.0.0",
     "dotenv": "^8.2.0",

@@ -6,7 +6,7 @@ const semver = require('semver');
 const colors = require('colors/safe');
 const userHome = require('user-home');
 const pathExists = require('path-exists').sync;
-
+const commander = require('commander');
 // require 支持加载 .js/.json/.node文件
 // 加载.js 文件，必须输出一个module.export
 // .json 文件 会使用 json.parse 对文件进行解析并且输出对象
@@ -14,8 +14,14 @@ const pathExists = require('path-exists').sync;
 // 其他文件默认使用.js 文件解析
 const pkg = require('../package.json')
 const log = require('@imooc-cli-dev-erica/log');
+const init = require('@imooc-cli-dev-erica/init');
 const constant = require('./const');
 let args;
+//  默认js解析
+// const file = require('./file.txt');
+// file()
+
+const program = new commander.Command(); //实例化脚手架对象
 async function core() {
     // 拦截报错信息
     try {
@@ -23,9 +29,10 @@ async function core() {
         checkNodeVersion();
         checkRoot();
         checkUserHome();
-        checkInputArgs();
+        //checkInputArgs(); //commander解析就不需要这个了
         checkEnv();
         checkClobalUpdate();
+        registerCommand();
     } catch(e) {
         log.error(e.message);
     }
@@ -46,7 +53,7 @@ function checkPkgVersion() {
 function checkNodeVersion() {
     // 第一步，获取当前node版本号
    const currentVersion = process.version;
-    console.log('currentVersion', currentVersion)
+    //console.log('currentVersion', currentVersion)
     // 第二步，比对最低版本号 gte(v1, v2): v1 >= v2
     const lowestVersion = constant.LOWEST_NODE_VERSION;
     if(!semver.gte(currentVersion, lowestVersion)) {
@@ -62,14 +69,14 @@ function checkNodeVersion() {
  function checkRoot() {
     const rootCheck = require('root-check');
     rootCheck(); // 进行权限降级
-    console.log(process.geteuid()); // 非管理员打印501 sudo 管理员打印0
+    //console.log(process.geteuid()); // 非管理员打印501 sudo 管理员打印0
  }
 
 /**
  * 用户目录检查功能
  */
 function checkUserHome() {
-    console.log(userHome) // /Users/wangyu
+    //console.log(userHome) // /Users/wangyu
     if(!userHome || !pathExists(userHome)) {
         throw new Error(colors.red('当前登陆用户主目录不存在！'));
     }
@@ -81,7 +88,7 @@ function checkInputArgs() {
 
     const minimist = require('minimist');
     args = minimist(process.argv.slice(2));
-    console.log(args)  // { _: [], debug: true }
+    //console.log(args)  // { _: [], debug: true }
     checkArgs()
     log.verbose('debug模式', 'test debug log')
 }
@@ -150,5 +157,58 @@ async function checkClobalUpdate() {
     // 3.提取版本号，比对哪些版本号大于当前版本号
     // 4.获取最新版本号，提示用户更新
 }
-const file = require('./file.txt');
-file()
+/**
+ * 命令注册 imooc-cli-dev -h
+ * name: 脚手架名称(imooc-cli-dev)
+ * name usage通过这两个选项可以修改帮助信息的首行提示，name 属性也可以从参数中推导出来
+ */
+
+function registerCommand() {
+    //1.注册版本号
+    program
+    .name(Object.keys(pkg.bin)[0]) //设置名字imooc-cli-dev
+    .usage('<command> [options')
+    .version(pkg.version)
+    .option('-d, --debug', '是否开启调试模式', false); // debug属性注册 default:false
+
+
+    // 监听 option debug  事件 imooc-cli-dev --debug / imooc-cli-dev -d
+    program.on('option:debug', function() {
+        if(program.debug) {
+            process.env.LOG_LEVEL = 'verbose' //可以使用log.verbos打印
+        } else {
+            process.env.LOG_LEVEL = 'info'
+        }   
+        log.level = process.env.LOG_LEVEL; // 修改lo实例中
+        log.verbose('test')
+    })
+
+    // 未知命令监听, 没有命中则进入下面逻辑 imooc-cli-dev test
+    program.on('command:*', function(obj) {
+        // program.commands注册的所有命令
+        const availableCommands = program.commands.map(cmd => cmd.name());
+        console.log(colors.red('未知命令：' + obj[0]));
+        if(availableCommands.length > 0) {
+            console.log(colors.red('可用命令：' + availableCommands.join(',')));
+        }
+    })
+
+    // 命令注册 - init 初始化项目 [init后输入的项目名称] mooc-cli-dev init ex
+    program
+        .command('init [projectName]')
+        .option('-f, --force', '是否强制初始化') // 当前目录不为空时候
+        .action(init)
+  
+
+
+  
+    program.parse(process.argv); //参数解析 process.argv 命令数组(放在最后)
+
+    //没有命令输出 node imooc-cli-dev  process.argv.length  ==2
+    if(process.args && process.args.length < 1) {
+        program.outputHelp(); //打印帮助文档
+
+    }
+
+
+}
