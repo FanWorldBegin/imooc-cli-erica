@@ -15,6 +15,7 @@ const commander = require('commander');
 const pkg = require('../package.json')
 const log = require('@imooc-cli-dev-erica/log');
 const init = require('@imooc-cli-dev-erica/init');
+const exec = require('@imooc-cli-dev-erica/exec');
 const constant = require('./const');
 let args;
 //  默认js解析
@@ -25,13 +26,7 @@ const program = new commander.Command(); //实例化脚手架对象
 async function core() {
     // 拦截报错信息
     try {
-        checkPkgVersion();
-        checkNodeVersion();
-        checkRoot();
-        checkUserHome();
-        //checkInputArgs(); //commander解析就不需要这个了
-        checkEnv();
-        checkClobalUpdate();
+        await prepare(); // 准备阶段
         registerCommand();
     } catch(e) {
         log.error(e.message);
@@ -82,11 +77,11 @@ function checkUserHome() {
     }
 }
 /**
- * 检查参数
+ * 检查参数（可以删除了）
  */
 function checkInputArgs() {
 
-    const minimist = require('minimist');
+    const minimist = require('minimist');  
     args = minimist(process.argv.slice(2));
     //console.log(args)  // { _: [], debug: true }
     checkArgs()
@@ -169,7 +164,8 @@ function registerCommand() {
     .name(Object.keys(pkg.bin)[0]) //设置名字imooc-cli-dev
     .usage('<command> [options')
     .version(pkg.version)
-    .option('-d, --debug', '是否开启调试模式', false); // debug属性注册 default:false
+    .option('-d, --debug', '是否开启调试模式', false) // debug属性注册 default:false
+    .option('-tp,  --targetPath <targetPath>', '是否指定本地调试文件路径', ''); // 默认为空
 
 
     // 监听 option debug  事件 imooc-cli-dev --debug / imooc-cli-dev -d
@@ -181,7 +177,16 @@ function registerCommand() {
         }   
         log.level = process.env.LOG_LEVEL; // 修改lo实例中
         log.verbose('test')
-    })
+    });
+
+    //  指定全局targetPath -- 业务逻辑之前监听
+    program.on('option:targetPath', function () {
+        //imooc-cli-dev init name --targetPath /xxx
+        console.log('program.targetPath', program._optionValues.targetPath);
+        // 设置环境变量
+        process.env.CLI_TAREGT_PATH = program._optionValues.targetPath;
+        
+    });
 
     // 未知命令监听, 没有命中则进入下面逻辑 imooc-cli-dev test
     program.on('command:*', function(obj) {
@@ -197,7 +202,7 @@ function registerCommand() {
     program
         .command('init [projectName]')
         .option('-f, --force', '是否强制初始化') // 当前目录不为空时候
-        .action(init)
+        .action(exec)
   
 
 
@@ -211,4 +216,18 @@ function registerCommand() {
     }
 
 
+}
+
+/**
+ * 初始化
+ */
+async function  prepare() {
+    checkPkgVersion();
+    checkNodeVersion();
+    checkRoot();
+    checkUserHome();
+    //checkInputArgs(); //commander解析就不需要这个了
+    checkEnv();
+    checkClobalUpdate();
+    
 }

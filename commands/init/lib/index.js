@@ -2,7 +2,15 @@
 
 module.exports = init;
 
-function init(projectName, cmdObj) {
-    // imooc-cli-dev init ex --force  ==> init ex { force: true }
-    console.log('init', projectName, cmdObj);
+/**
+ * 
+ * @param {*} projectName 
+ * @param {*} option 
+ * @param {*} command 
+ */
+function init(projectName, options, command) {
+
+    //imooc-cli-dev init name --targetPath /xxx (command.parent._optionValues.targetPath)
+    // process.env.CLI_TAREGT_PATH 环境变量
+    //console.log('init', projectName, options, command.parent._optionValues.targetPath,  process.env.CLI_TAREGT_PATH);
 }
