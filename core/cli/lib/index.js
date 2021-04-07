@@ -4,8 +4,8 @@ module.exports = core;
 const path = require('path');
 const semver = require('semver');
 const colors = require('colors/safe');
-const userHome = require('user-home');
-const pathExists = require('path-exists').sync;
+const userHome = require('user-home'); // 返回用户主目录路径
+const pathExists = require('path-exists').sync; //判断文件是否存在
 
 // require 支持加载 .js/.json/.node文件
 // 加载.js 文件，必须输出一个module.export
@@ -49,7 +49,7 @@ function checkNodeVersion() {
     console.log('currentVersion', currentVersion)
     // 第二步，比对最低版本号 gte(v1, v2): v1 >= v2
     const lowestVersion = constant.LOWEST_NODE_VERSION;
-    if(!semver.gte(currentVersion, lowestVersion)) {
+    if(!semver.gte(currentVersion, lowestVersion)) {  // semver对比版本号
         throw new Error(colors.red(`imooc-cli-dev-erica 需要安装v${lowestVersion}以上版本的node.js`));
     }
 
@@ -71,7 +71,7 @@ function checkNodeVersion() {
 function checkUserHome() {
     console.log(userHome) // /Users/wangyu
     if(!userHome || !pathExists(userHome)) {
-        throw new Error(colors.red('当前登陆用户主目录不存在！'));
+        throw new Error(colors.red('当前登陆用户主目录不存在！'));  // 没有主目录不能继续
     }
 }
 /**
@@ -127,8 +127,10 @@ function createDefaultConfig() {
     if(process.env.CLI_HOME) {
         cliConfig['cliHome'] = path.join(userHome, process.env.CLI_HOME)
     } else {
+        // 默认配置，用户没有在.env 文件配置
         cliConfig['cliHome'] = path.join(userHome, constant.DEFAULT_CLI_HOME)
     }
+    // 设置全局的环境变量
     process.env.CLI_HOME_PATH = cliConfig.cliHome;
 }
 

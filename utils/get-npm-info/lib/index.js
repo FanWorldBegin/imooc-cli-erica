@@ -4,6 +4,11 @@ const axios = require('axios');
 const urlJoin = require('url-join');
 const semver = require('semver');
 
+/**
+ * 
+ * @param {包名} npmName 
+ * @param {npm官方名} registry 
+ */
 function getNpmInfo(npmName, registry) {
     if(!npmName) {
         return null
@@ -24,7 +29,7 @@ function getNpmInfo(npmName, registry) {
 }
 
 /**
- * 获取默认的registry
+ * 获取默认的registry 淘宝源或者原生的
  */
 function getDefaultRegistry(isOrginal = false) {
     return isOrginal ? 'https://registry.npmjs.org/': 'https://registry.npm.taobao.org/'
@@ -34,7 +39,7 @@ function getDefaultRegistry(isOrginal = false) {
 /**
  * 获取包的版本号
  * @param {*} npmName 
- * @param {*} registry 
+ * @param {*} registry 没有的话会使用默认的
  */
 async function getNpmVersion(npmName, registry) {
     const data = await getNpmInfo(npmName, registry);
@@ -58,6 +63,14 @@ function getNpmSemverVersions(baseVersion, versions) {
 
 }
 
+
+
+/**
+ * 
+ * @param {基础版本号} baseVersion 
+ * @param {npm 包名} npmName 
+ * @param {仓库地址} registry 
+ */
 async function getNpmSemverVersion(baseVersion, npmName, registry,) {
 
     const versions = await getNpmVersion(npmName, registry);
