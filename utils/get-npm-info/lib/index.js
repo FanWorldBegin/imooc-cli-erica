@@ -88,7 +88,7 @@ async function getNpmSemverVersion(baseVersion, npmName, registry,) {
 function semverSort(versionArray, baseVersion) {
     let lastVersion = baseVersion;
     versionArray.map(value => {
-        //比较大小 v1 > v2
+        //比较大小 gt(v1, v2): v1 > v2
         if(semver.gt(value, lastVersion)) {
             lastVersion = value;
         }

@@ -144,6 +144,7 @@ async function checkClobalUpdate() {
     // 2.调用npm api 获取所有版本号,拿到所有版本信息
     const { getNpmSemverVersion } = require('@imooc-cli-dev-erica/get-npm-info');
     const latestVersion = await getNpmSemverVersion(currentVersion, npmName);
+    // gt(v1, v2): v1 > v2
     if(latestVersion && semver.gt(latestVersion, currentVersion)) {
         log.warn(colors.yellow(`请手动更新${npmName}, 当前版本为${currentVersion}, 最新版本${latestVersion}
         更新命令： npm install -g ${npmName}`));
