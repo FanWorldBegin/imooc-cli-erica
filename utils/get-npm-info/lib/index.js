@@ -41,7 +41,7 @@ function getDefaultRegistry(isOrginal = false) {
  * @param {*} npmName 
  * @param {*} registry 没有的话会使用默认的
  */
-async function getNpmVersion(npmName, registry) {
+async function getNpmVersions(npmName, registry) {
     const data = await getNpmInfo(npmName, registry);
     if(data) {
         return Object.keys(data.versions);
@@ -73,7 +73,7 @@ function getNpmSemverVersions(baseVersion, versions) {
  */
 async function getNpmSemverVersion(baseVersion, npmName, registry,) {
 
-    const versions = await getNpmVersion(npmName, registry);
+    const versions = await getNpmVersions(npmName, registry);
     const newVersions = getNpmSemverVersions(baseVersion, versions);
     if(newVersions && newVersions.length > 0) {
         return semverSort(newVersions, baseVersion); 
@@ -95,9 +95,22 @@ function semverSort(versionArray, baseVersion) {
     })
     return lastVersion
 }
+
+async function getNpmLatestVersion(npmName, registry) {
+    const versions = await getNpmVersions(npmName, registry);
+    if(versions) {
+        return semverSort(versions, '1.0.0');
+    }
+
+    return null;
+}
+
+
 module.exports = {
     getNpmInfo,
-    getNpmVersion,
-    getNpmSemverVersion
+    getNpmVersions,
+    getNpmSemverVersion,
+    getDefaultRegistry,
+    getNpmLatestVersion
 
 };

@@ -30,6 +30,9 @@ async function core() {
         registerCommand();
     } catch(e) {
         log.error(e.message);
+        if(program.debug) {
+            console.log(e)
+        }
     }
 }
 /**
@@ -45,17 +48,17 @@ function checkPkgVersion() {
 /**
  * 检查node版本号
  */
-function checkNodeVersion() {
-    // 第一步，获取当前node版本号
-   const currentVersion = process.version;
-    //console.log('currentVersion', currentVersion)
-    // 第二步，比对最低版本号 gte(v1, v2): v1 >= v2
-    const lowestVersion = constant.LOWEST_NODE_VERSION;
-    if(!semver.gte(currentVersion, lowestVersion)) {  // semver对比版本号
-        throw new Error(colors.red(`imooc-cli-dev-erica 需要安装v${lowestVersion}以上版本的node.js`));
-    }
+// function checkNodeVersion() {
+//     // 第一步，获取当前node版本号
+//    const currentVersion = process.version;
+//     //console.log('currentVersion', currentVersion)
+//     // 第二步，比对最低版本号 gte(v1, v2): v1 >= v2
+//     const lowestVersion = constant.LOWEST_NODE_VERSION;
+//     if(!semver.gte(currentVersion, lowestVersion)) {  // semver对比版本号
+//         throw new Error(colors.red(`imooc-cli-dev-erica 需要安装v${lowestVersion}以上版本的node.js`));
+//     }
 
-}
+// }
 
 /**
  * 检查是否为root账号启动并降级
@@ -134,6 +137,7 @@ function createDefaultConfig() {
     }
     // 设置全局的环境变量
     process.env.CLI_HOME_PATH = cliConfig.cliHome;
+    // console.log('路径', cliConfig.cliHome)
 }
 
  /**
@@ -165,7 +169,7 @@ function registerCommand() {
     //1.注册版本号
     program
     .name(Object.keys(pkg.bin)[0]) //设置名字imooc-cli-dev
-    .usage('<command> [options')
+    .usage('<command> [options]')
     .version(pkg.version)
     .option('-d, --debug', '是否开启调试模式', false) // debug属性注册 default:false
     .option('-tp,  --targetPath <targetPath>', '是否指定本地调试文件路径', ''); // 默认为空
@@ -173,7 +177,7 @@ function registerCommand() {
 
     // 监听 option debug  事件 imooc-cli-dev --debug / imooc-cli-dev -d
     program.on('option:debug', function() {
-        if(program.debug) {
+        if(program._optionValues.debug) {
             process.env.LOG_LEVEL = 'verbose' //可以使用log.verbos打印
         } else {
             process.env.LOG_LEVEL = 'info'
@@ -226,7 +230,7 @@ function registerCommand() {
  */
 async function  prepare() {
     checkPkgVersion();
-    checkNodeVersion();
+    //checkNodeVersion();
     checkRoot();
     checkUserHome();
     //checkInputArgs(); //commander解析就不需要这个了

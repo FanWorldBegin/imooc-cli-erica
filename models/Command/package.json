@@ -1,7 +1,7 @@
 {
-  "name": "@imooc-cli-dev-erica/init",
-  "version": "1.0.4",
-  "description": "初始化",
+  "name": "@imooc-cli-dev-erica/command",
+  "version": "1.0.0",
+  "description": "> TODO: description",
   "author": "FanWorldBegin <ericaFront1995@gmail.com>",
   "homepage": "https://github.com/FanWorldBegin/imooc-cli-erica#readme",
   "license": "ISC",
@@ -27,7 +27,9 @@
     "url": "https://github.com/FanWorldBegin/imooc-cli-erica/issues"
   },
   "dependencies": {
-    "@imooc-cli-dev-erica/command": "file:../../models/Command",
-    "@imooc-cli-dev-erica/log": "file:../../utils/log"
+    "colors": "^1.4.0",
+    "semver": "^7.3.5",
+    "@imooc-cli-dev-erica/log": "file:../../utils/log",
+    "@imooc-cli-dev-erica/utils": "file:../../utils/utils"
   }
 }

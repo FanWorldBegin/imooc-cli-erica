@@ -1,6 +1,6 @@
 {
-  "name": "@imooc-cli-dev-erica/init",
-  "version": "1.0.4",
+  "name": "@imooc-cli-dev-erica/Package",
+  "version": "1.0.0",
   "description": "初始化",
   "author": "FanWorldBegin <ericaFront1995@gmail.com>",
   "homepage": "https://github.com/FanWorldBegin/imooc-cli-erica#readme",
@@ -27,7 +27,11 @@
     "url": "https://github.com/FanWorldBegin/imooc-cli-erica/issues"
   },
   "dependencies": {
-    "@imooc-cli-dev-erica/command": "file:../../models/Command",
-    "@imooc-cli-dev-erica/log": "file:../../utils/log"
+    "@imooc-cli-dev-erica/format-path": "file:../../utils/format-path",
+    "@imooc-cli-dev-erica/get-npm-info": "file:../../utils/get-npm-info",
+    "@imooc-cli-dev-erica/utils": "file:../../utils/utils",
+    "fs-extra": "^9.1.0",
+    "npminstall": "^4.11.0",
+    "pkg-dir": "^5.0.0"
   }
 }

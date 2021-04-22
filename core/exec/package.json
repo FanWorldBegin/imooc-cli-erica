@@ -25,5 +25,9 @@
   },
   "bugs": {
     "url": "https://github.com/FanWorldBegin/imooc-cli-erica/issues"
+  },
+  "dependencies": {
+    "@imooc-cli-dev-erica/Package": "file:../../models/Package",
+    "@imooc-cli-dev-erica/log": "file:../../utils/log"
   }
 }

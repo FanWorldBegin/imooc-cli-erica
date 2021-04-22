@@ -1,6 +1,6 @@
 # `@imooc-cli-dev-erica/init`
 
-> TODO: description
+> TODO: description 库文件
 
 ## Usage
 
